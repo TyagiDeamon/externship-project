@@ -23,19 +23,22 @@ const userSignup = async (req, res) => {
 
 		const hashedPassword = await bcrypt.hash(req.body.password, 12);
 
+		const token = jwt.sign({ email: req.body.email }, "test", {
+			expiresIn: "1d",
+		});
+
 		const newUser = await User.create({
 			email: req.body.email,
 			username: req.body.username,
 			password: hashedPassword,
 			name: req.body.name,
+			tempToken: token,
 			posts: [],
 		});
 
-		const token = jwt.sign({ email: newUser.email, id: newUser._id }, "test", {
-			expiresIn: "1d",
-		});
-
-		res.status(201).json({ newUser, token });
+		res
+			.status(201)
+			.json({ newUser, token, message: "Account not yet activated" });
 	} catch (err) {
 		res.status(500).json({ message: err.message });
 	}

@@ -10,6 +10,10 @@ const postSchema = new Schema({
 		type: String,
 		required: true,
 	},
+	author_id: {
+		type: String,
+		required: true,
+	},
 	author_name: {
 		type: String,
 		default: "Anonymous",

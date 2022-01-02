@@ -14,6 +14,7 @@ const createPublicPost = async (req, res) => {
 		const newPost = await Post.create({
 			title: req.body.title,
 			description: req.body.description,
+			author_id: existingUser._id,
 			author_name: existingUser.name,
 		});
 

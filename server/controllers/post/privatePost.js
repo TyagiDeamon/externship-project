@@ -14,6 +14,7 @@ const createPrivatePost = async (req, res) => {
 		const newPost = new Post({
 			title: req.body.title,
 			description: req.body.description,
+			author_id: existingUser._id,
 			author_name: existingUser.name,
     });
     

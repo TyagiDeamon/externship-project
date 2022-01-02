@@ -10,6 +10,10 @@ const userLogin = async (req, res) => {
 			return res.status(404).json({ message: "Account does not exist." });
 		}
 
+		if (!existingUser.emailVerified) {
+			return res.status(400).json({ message: "Account not yet activated." });
+		}
+
 		const isPasswordCorrect = await bcrypt.compare(
 			password,
 			existingUser.password

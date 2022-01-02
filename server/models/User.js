@@ -15,9 +15,13 @@ const userSchema = new Schema({
 		type: String,
 		required: true,
 	},
-	email_verified: {
+	emailVerified: {
 		type: Boolean,
 		default: false,
+	},
+	tempToken: {
+		type: String,
+		required: true,
 	},
 	created_at: {
 		type: Date,

@@ -32,6 +32,7 @@ const userSchema = new Schema({
 		default: Date.now,
 	},
 	posts: [],
+	passwordResetToken: String,
 });
 
 const User = mongoose.model("User", userSchema);

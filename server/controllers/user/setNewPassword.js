@@ -1,6 +1,7 @@
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
 import User from "../../models/User.js";
+import "dotenv/config";
 
 const setNewPassword = async (req, res) => {
 	const token = req.params.passwordResetToken;
@@ -13,7 +14,7 @@ const setNewPassword = async (req, res) => {
 				.json({ message: "Invalid token or token may has expired" });
 		}
 
-		const isValid = jwt.verify(token, "test");
+		const isValid = jwt.verify(token, process.env.SECRET_KEY);
 
 		if (isValid) {
       existingUser.passwordResetToken = false;

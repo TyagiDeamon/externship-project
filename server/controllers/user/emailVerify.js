@@ -1,5 +1,7 @@
 import jwt from "jsonwebtoken";
 import User from "../../models/User.js";
+import axios from "axios";
+import "dotenv/config";
 
 const emailVerify = async (req, res) => {
 	const token = req.params.token;
@@ -16,7 +18,7 @@ const emailVerify = async (req, res) => {
 			return res.status(400).json({ message: "Account already activated" });
 		}
 
-		const isValid = jwt.verify(token, "test");
+		const isValid = jwt.verify(token, process.env.SECRET_KEY);
 
 		if (isValid) {
 			existingUser.emailVerified = true;
@@ -28,6 +30,12 @@ const emailVerify = async (req, res) => {
 				.status(400)
 				.json({ message: "Invalid token or token may has expired" });
 		}
+
+		await axios.post("http://localhost:6000/email/sendEmail", {
+			email: existingUser.email,
+			subject: "Account activated",
+			text: "Hello, your account is successfully activated!"
+		})
 
 		res.status(200).json({ existingUser, message: "Account activated" });
 	} catch (err) {

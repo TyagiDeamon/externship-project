@@ -1,6 +1,8 @@
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import User from "../../models/User.js";
+import axios from "axios";
+import "dotenv/config";
 
 const userSignup = async (req, res) => {
 	try {
@@ -23,7 +25,7 @@ const userSignup = async (req, res) => {
 
 		const hashedPassword = await bcrypt.hash(req.body.password, 12);
 
-		const token = jwt.sign({ email: req.body.email }, "test", {
+		const token = jwt.sign({ email: req.body.email }, process.env.SECRET_KEY, {
 			expiresIn: "1d",
 		});
 
@@ -34,6 +36,12 @@ const userSignup = async (req, res) => {
 			name: req.body.name,
 			tempToken: token,
 			posts: [],
+		});
+
+		await axios.post("http://localhost:6000/email/sendEmail", {
+			email: req.body.email,
+			subject: "Welcome! Activate your account",
+			text: `Hello, please activate your account using the following link: http://localhost:5000/user/emailVerify/${token}`,
 		});
 
 		res

@@ -22,7 +22,7 @@ app.use("/user", userRoutes);
 app.use("/post", postRoutes);
 
 mongoose.connect(
-	process.env.mongoURI,
+	process.env.MONGO_URI,
 	{ useNewUrlParser: true, useUnifiedTopology: true },
 	() => {
 		console.log("Connected to MongoDB!");

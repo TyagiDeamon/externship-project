@@ -42,8 +42,8 @@ const userSignup = async (req, res) => {
 			username: req.body.username,
 			password: hashedPassword,
 			name: req.body.name,
-			avatar: uploadResult.secure_url,
-			cloudinary_id: uploadResult.public_id,
+			avatar: uploadResult.data.secure_url,
+			cloudinary_id: uploadResult.data.public_id,
 			tempToken: token,
 			posts: [],
 		});

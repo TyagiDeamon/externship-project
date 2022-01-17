@@ -34,8 +34,8 @@ const emailVerify = async (req, res) => {
 		await axios.post("http://localhost:6000/email/sendEmail", {
 			email: existingUser.email,
 			subject: "Account activated",
-			text: "Hello, your account is successfully activated!"
-		})
+			text: "Hello, your account is successfully activated!",
+		});
 
 		res.status(200).json({ existingUser, message: "Account activated" });
 	} catch (err) {

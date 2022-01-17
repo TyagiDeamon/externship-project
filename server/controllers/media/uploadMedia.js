@@ -1,7 +1,7 @@
 import cloudinary from "../../utils/cloudinary.js";
 
 const uploadMedia = async (req, res) => {
-  try {
+	try {
 		const uploadResult = await cloudinary.uploader.upload(req.body.path);
 
 		res.status(200).json(uploadResult);

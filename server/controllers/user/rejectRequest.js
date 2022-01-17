@@ -1,7 +1,7 @@
 import jwt from "jsonwebtoken";
 import User from "../../models/User.js";
 
-const acceptRequest = async (req, res) => {
+const rejectRequest = async (req, res) => {
 	try {
 		if (!req.headers.token) {
 			return res.status(400).json({ message: "Please login to continue!" });
@@ -25,9 +25,6 @@ const acceptRequest = async (req, res) => {
 
 		const user2 = await User.findById(req.params.id);
 
-		user1.friends.push(user2.id);
-		user2.friends.push(user1.id);
-
 		user1.recievedRequests.splice(user1.recievedRequests.indexOf(user2.id), 1);
 		user2.sentRequests.splice(user1.sentRequests.indexOf(user1.id), 1);
 
@@ -35,12 +32,11 @@ const acceptRequest = async (req, res) => {
 		await user2.save();
 
 		res.status(200).json({
-			message: "Added friend successfully",
-			user1Friends: user1.friends,
+			message: "Rejected request successfully",
 		});
 	} catch (err) {
 		res.status(500).json({ message: err.message });
 	}
 };
 
-export default acceptRequest;
+export default rejectRequest;

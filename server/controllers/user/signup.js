@@ -2,7 +2,6 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import User from "../../models/User.js";
 import axios from "axios";
-import "dotenv/config";
 
 const userSignup = async (req, res) => {
 	try {
@@ -23,6 +22,15 @@ const userSignup = async (req, res) => {
 			});
 		}
 
+		const uploadResult = await axios.post(
+			"http://localhost:7000/media/uploadMedia",
+			req.file
+		);
+
+		if (uploadResult.status == 500) {
+			return res.status(500).json(uploadResult);
+		}
+
 		const hashedPassword = await bcrypt.hash(req.body.password, 12);
 
 		const token = jwt.sign({ email: req.body.email }, process.env.SECRET_KEY, {
@@ -34,6 +42,8 @@ const userSignup = async (req, res) => {
 			username: req.body.username,
 			password: hashedPassword,
 			name: req.body.name,
+			avatar: uploadResult.secure_url,
+			cloudinary_id: uploadResult.public_id,
 			tempToken: token,
 			posts: [],
 		});

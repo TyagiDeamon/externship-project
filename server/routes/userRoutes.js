@@ -1,4 +1,5 @@
 import express from "express";
+import upload from "../utils/multer.js";
 import userLogin from "../controllers/user/login.js";
 import userSignup from "../controllers/user/signup.js";
 import getUserById from "../controllers/user/getUserById.js";
@@ -8,7 +9,7 @@ import setNewPassword from "../controllers/user/setNewPassword.js";
 
 const router = express.Router();
 
-router.post("/signup", userSignup);
+router.post("/signup", upload.single("image"), userSignup);
 
 router.post("/login", userLogin);
 

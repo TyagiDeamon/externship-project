@@ -12,22 +12,31 @@ import acceptRequest from "../controllers/user/acceptRequest.js";
 import rejectRequest from "../controllers/user/rejectRequest.js";
 import removeFriend from "../controllers/user/removeFriend.js";
 
+import {
+	getUser,
+	verifyLogin,
+	emailVerified,
+} from "../middlewares/user.middleware.js";
+
 const router = express.Router();
 
 router.get("/", getUsers);
 router.get("/:id", getUserById);
 
-router.post("/signup", upload.single("image"), userSignup);
-router.post("/login", userLogin);
+router.post("/signup", upload.single("image"), getUser, userSignup);
 
 router.get("/emailVerify/:token", emailVerify);
 
-router.post("/passwordReset", passwordReset);
+router.use(getUser, emailVerified);
+
+router.post("/login", getUser, userLogin);
+
+router.post("/passwordReset", getUser, passwordReset);
 router.post("/setNewPassword/:passwordResetToken", setNewPassword);
 
-router.post("/sendFriendRequest/:id", sendFriendRequest);
-router.post("/acceptRequest/:id", acceptRequest);
-router.post("/rejectRequest/:id", rejectRequest);
-router.post("/removeFriend/:id", removeFriend);
+router.post("/sendFriendRequest/:id", verifyLogin, sendFriendRequest);
+router.post("/acceptRequest/:id", verifyLogin, acceptRequest);
+router.post("/rejectRequest/:id", verifyLogin, rejectRequest);
+router.post("/removeFriend/:id", verifyLogin, removeFriend);
 
 export default router;

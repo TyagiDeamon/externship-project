@@ -9,13 +9,11 @@ const emailVerify = async (req, res) => {
 		const existingUser = await User.findOne({ tempToken: token });
 
 		if (!existingUser) {
-			return res
-				.status(400)
-				.json({ message: "Invalid token or token may has expired" });
+			throw { status: 400, message: "Invalid token or token may has expired" };
 		}
 
 		if (existingUser.emailVerified) {
-			return res.status(400).json({ message: "Account already activated" });
+			throw { status: 400, message: "Account already activated" };
 		}
 
 		const isValid = jwt.verify(token, process.env.SECRET_KEY);
@@ -26,9 +24,7 @@ const emailVerify = async (req, res) => {
 
 			await existingUser.save();
 		} else {
-			return res
-				.status(400)
-				.json({ message: "Invalid token or token may has expired" });
+			throw { status: 400, message: "Invalid token or token may has expired" };
 		}
 
 		await axios.post("http://localhost:6000/email/sendEmail", {
@@ -39,7 +35,7 @@ const emailVerify = async (req, res) => {
 
 		res.status(200).json({ existingUser, message: "Account activated" });
 	} catch (err) {
-		res.status(500).json({ message: err.message });
+		res.status(err.status || 500).json({ message: err.message });
 	}
 };
 

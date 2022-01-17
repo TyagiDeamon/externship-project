@@ -5,10 +5,10 @@ import "dotenv/config";
 
 const passwordReset = async (req, res) => {
 	try {
-		const existingUser = await User.findOne({ email: req.body.email });
+		const existingUser = await User.findById(req.body.id);
 
 		if (!existingUser) {
-			return res.status(404).json({ message: "Account not found" });
+			throw { status: 404, message: "Account not found" };
 		}
 
 		const token = jwt.sign({ email: req.body.email }, process.env.SECRET_KEY, {
@@ -29,7 +29,7 @@ const passwordReset = async (req, res) => {
 			.status(200)
 			.json({ token: token, message: "Use this token to reset password" });
 	} catch (err) {
-		res.status(500).json({ message: err.message });
+		res.status(err.status || 500).json({ message: err.message });
 	}
 };
 

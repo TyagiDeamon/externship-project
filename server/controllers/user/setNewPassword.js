@@ -9,9 +9,7 @@ const setNewPassword = async (req, res) => {
 		const existingUser = await User.findOne({ passwordResetToken: token });
 
 		if (!existingUser) {
-			return res
-				.status(400)
-				.json({ message: "Invalid token or token may has expired" });
+			throw { status: 400, message: "Invalid token or token may has expired" };
 		}
 
 		const isValid = jwt.verify(token, process.env.SECRET_KEY);
@@ -24,16 +22,14 @@ const setNewPassword = async (req, res) => {
 
 			await existingUser.save();
 		} else {
-			return res
-				.status(400)
-				.json({ message: "Invalid token or token may has expired" });
+			throw { status: 400, message: "Invalid token or token may has expired" };
 		}
 
 		res
 			.status(200)
 			.json({ existingUser, message: "Password reset successful" });
 	} catch (err) {
-		res.status(500).json({ message: err.message });
+		res.status(err.status || 500).json({ message: err.message });
 	}
 };
 

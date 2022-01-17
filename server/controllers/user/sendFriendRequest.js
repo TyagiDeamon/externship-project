@@ -1,22 +1,12 @@
-import jwt from "jsonwebtoken";
 import User from "../../models/User.js";
 
 const sendFriendRequest = async (req, res) => {
 	try {
-		if (!req.headers.token) {
-			return res.status(400).json({ message: "Please login to continue!" });
+		if (req.body.id === req.params.id) {
+			throw { status: 400, message: "Bad request" };
 		}
 
-		const data = jwt.verify(req.headers.token, process.env.SECRET_KEY);
-
-		if (!data) {
-			return res.status(400).json({
-				message: "Invalid login. PLease login again to continue!",
-			});
-		}
-		const senderId = data.id;
-
-		const sender = await User.findById(senderId);
+		const sender = await User.findById(req.body.id);
 
 		if (!sender) {
 			return res.status(404).json({
@@ -24,12 +14,18 @@ const sendFriendRequest = async (req, res) => {
 			});
 		}
 
+		if (sender.friends.includes(req.params.id)) {
+			throw { status: 400, message: "Already friends with the user" };
+		}
+
+		if (sender.sentRequests.includes(req.params.id)) {
+			throw { status: 400, message: "Already sent a request to the user" };
+		}
+
 		const user = await User.findById(req.params.id);
 
 		if (!user) {
-			return res.status(404).json({
-				message: "Account not found",
-			});
+			throw { status: 404, message: "Account not found" };
 		}
 
 		sender.sentRequests.push(user._id);
@@ -43,7 +39,7 @@ const sendFriendRequest = async (req, res) => {
 			sentRequests: sender.sentRequests,
 		});
 	} catch (err) {
-		res.status(500).json({ message: err.message });
+		res.status(err.status || 500).json({ message: err.message });
 	}
 };
 

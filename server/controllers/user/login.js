@@ -4,15 +4,11 @@ import User from "../../models/User.js";
 import "dotenv/config";
 
 const userLogin = async (req, res) => {
-	const { email, password } = req.body;
+	const { password } = req.body;
 	try {
-		const existingUser = await User.findOne({ email });
+		const existingUser = await User.findById(req.body.id);
 		if (!existingUser) {
-			return res.status(404).json({ message: "Account does not exist." });
-		}
-
-		if (!existingUser.emailVerified) {
-			return res.status(400).json({ message: "Account not yet activated." });
+			throw { status: 404, message: "Account not found" };
 		}
 
 		const isPasswordCorrect = await bcrypt.compare(
@@ -21,7 +17,7 @@ const userLogin = async (req, res) => {
 		);
 
 		if (!isPasswordCorrect) {
-			return res.status(400).json({ message: "Incorrect password." });
+			throw { status: 400, message: "Incorrect password" };
 		}
 
 		const token = jwt.sign(
@@ -32,7 +28,7 @@ const userLogin = async (req, res) => {
 
 		res.status(200).json({ result: existingUser, token });
 	} catch (err) {
-		res.status(500).json({ message: err.message });
+		res.status(err.status || 500).json({ message: err.message });
 	}
 };
 

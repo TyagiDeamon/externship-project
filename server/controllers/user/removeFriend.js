@@ -1,24 +1,11 @@
-import jwt from "jsonwebtoken";
 import User from "../../models/User.js";
 
 const removeFriend = async (req, res) => {
 	try {
-		if (!req.headers.token) {
-			return res.status(400).json({ message: "Please login to continue!" });
-		}
-
-		const data = jwt.verify(req.headers.token, process.env.SECRET_KEY);
-
-		if (!data) {
-			return res.status(400).json({
-				message: "Invalid login. PLease login again to continue!",
-			});
-		}
-
-		const user1 = await User.findById(data.id);
+		const user1 = await User.findById(req.body.id);
 
 		if (!user1.friends.includes(req.params.id)) {
-			return res.status(404).json({ message: "User is not your friend" });
+			throw { status: 404, message: "User is not your friend" };
 		}
 
 		const user2 = await User.findById(req.params.id);
@@ -34,7 +21,7 @@ const removeFriend = async (req, res) => {
 			user1Friends: user1.friends,
 		});
 	} catch (err) {
-		res.status(500).json({ message: err.message });
+		res.status(err.status || 500).json({ message: err.message });
 	}
 };
 

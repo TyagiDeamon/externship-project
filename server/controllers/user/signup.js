@@ -5,21 +5,8 @@ import axios from "axios";
 
 const userSignup = async (req, res) => {
 	try {
-		const existingUser = await User.findOne({
-			$or: [
-				{
-					email: req.body.email,
-				},
-				{
-					username: req.body.username,
-				},
-			],
-		});
-
-		if (existingUser) {
-			return res.status(400).json({
-				message: "Account already exists with the provided credentials.",
-			});
+		if (req.body.id) {
+			throw { status: 400, message: "Account already exists with the provided credentials" };
 		}
 
 		const uploadResult = await axios.post(
@@ -58,7 +45,7 @@ const userSignup = async (req, res) => {
 			.status(201)
 			.json({ newUser, token, message: "Account not yet activated" });
 	} catch (err) {
-		res.status(500).json({ message: err.message });
+		res.status(err.status || 500).json({ message: err.message });
 	}
 };
 

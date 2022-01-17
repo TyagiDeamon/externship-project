@@ -9,9 +9,10 @@ const sendFriendRequest = async (req, res) => {
 		const sender = await User.findById(req.body.id);
 
 		if (!sender) {
-			return res.status(404).json({
+			throw {
+				status: 404,
 				message: "Something went wrong! Please login again to continue",
-			});
+			};
 		}
 
 		if (sender.friends.includes(req.params.id)) {

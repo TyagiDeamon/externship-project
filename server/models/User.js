@@ -21,10 +21,14 @@ const userSchema = new Schema({
 		type: Boolean,
 		default: false,
 	},
+	signedInToken: {},
 	tempToken: {
 		type: String,
 		required: true,
 	},
+	sentRequests: [],
+	recievedRequests: [],
+	friends: [],
 	created_at: {
 		type: Date,
 		default: Date.now,

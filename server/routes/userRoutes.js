@@ -8,6 +8,7 @@ import emailVerify from "../controllers/user/emailVerify.js";
 import passwordReset from "../controllers/user/passwordReset.js";
 import setNewPassword from "../controllers/user/setNewPassword.js";
 import sendFriendRequest from "../controllers/user/sendFriendRequest.js";
+import acceptRequest from "../controllers/user/acceptRequest.js";
 
 const router = express.Router();
 
@@ -23,5 +24,6 @@ router.post("/passwordReset", passwordReset);
 router.post("/setNewPassword/:passwordResetToken", setNewPassword);
 
 router.post("/sendFriendRequest/:id", sendFriendRequest);
+router.post("/acceptRequest/:id", acceptRequest);
 
 export default router;

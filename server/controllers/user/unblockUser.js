@@ -2,7 +2,7 @@ import User from "../../models/User.js";
 
 const unblockUser = async (req, res) => {
 	try {
-		const user = await User.findById(req.body.id);
+		const user = await User.findById(req.body.id).select("blocked");
 
 		if (!user) {
 			throw { status: 404, message: "Please signup or login to continue" };

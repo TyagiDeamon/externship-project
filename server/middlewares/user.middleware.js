@@ -9,7 +9,7 @@ export const getUser = async (req, res, next) => {
 				{ username: req.body.username },
 				{ _id: req.body.id },
 			],
-		});
+		}).select("_id");
 
 		if (existingUser) {
 			req.body.id = existingUser._id;
@@ -49,7 +49,7 @@ export const verifyLogin = async (req, res, next) => {
 
 export const emailVerified = async (req, res, next) => {
 	try {
-		const user = await User.findById(req.body.id);
+		const user = await User.findById(req.body.id).select("emailVerified");
 
 		if (!user) {
 			throw { status: 404, message: "Account not found" };

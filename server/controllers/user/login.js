@@ -6,7 +6,7 @@ import "dotenv/config";
 const userLogin = async (req, res) => {
 	const { password } = req.body;
 	try {
-		const existingUser = await User.findById(req.body.id);
+		const existingUser = await User.findById(req.body.id).select("password");
 		if (!existingUser) {
 			throw { status: 404, message: "Account not found" };
 		}

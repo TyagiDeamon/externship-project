@@ -3,7 +3,9 @@ import User from "../../models/User.js";
 
 const deleteAvatar = async (req, res) => {
 	try {
-		const user = await User.findById(req.body.id);
+		const user = await User.findById(req.body.id).select(
+			"avatar cloudinary_id"
+		);
 
 		if (!user) {
 			throw { status: 404, message: "Please signup or login to continue" };

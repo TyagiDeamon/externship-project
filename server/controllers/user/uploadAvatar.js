@@ -7,7 +7,9 @@ const uploadAvatar = async (req, res) => {
 			throw { status: 400, message: "No file selected" };
 		}
 
-		const user = await User.findById(req.body.id);
+		const user = await User.findById(req.body.id).select(
+			"cloudinary_id avatar"
+		);
 
 		if (!user) {
 			throw { status: 404, message: "Please signup or login to continue" };
@@ -40,9 +42,7 @@ const uploadAvatar = async (req, res) => {
 
 		await user.save();
 
-		res
-			.status(200)
-			.json({ message: "Avatar uploaded successfully" });
+		res.status(200).json({ message: "Avatar uploaded successfully" });
 	} catch (err) {
 		res
 			.status(err.status || 500)

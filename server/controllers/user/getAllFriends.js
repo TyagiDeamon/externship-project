@@ -2,7 +2,7 @@ import User from "../../models/User.js";
 
 const getAllFriends = async (req, res) => {
 	try {
-		const user = await User.findById(req.body.id);
+		const user = await User.findById(req.body.id).select("friends");
 
 		if (!user) {
 			throw { status: 404, message: "Account not found" };

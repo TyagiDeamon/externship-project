@@ -37,7 +37,7 @@ router.get("/getRecievedRequests", verifyLogin, getRecievedRequests);
 
 // router.use(getUser, emailVerified);
 
-router.get("/login", getUser, emailVerified, userLogin);
+router.post("/login", getUser, emailVerified, userLogin);
 
 router.post("/passwordReset", getUser, emailVerified, passwordReset);
 router.post("/setNewPassword/:passwordResetToken", setNewPassword);

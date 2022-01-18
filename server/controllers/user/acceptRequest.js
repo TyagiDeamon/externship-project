@@ -14,7 +14,7 @@ const acceptRequest = async (req, res) => {
 		user2.friends.push(user1.id);
 
 		user1.recievedRequests.splice(user1.recievedRequests.indexOf(user2.id), 1);
-		user2.sentRequests.splice(user1.sentRequests.indexOf(user1.id), 1);
+		user2.sentRequests.splice(user2.sentRequests.indexOf(user1.id), 1);
 
 		await user1.save();
 		await user2.save();

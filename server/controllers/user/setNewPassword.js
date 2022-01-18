@@ -9,7 +9,7 @@ const setNewPassword = async (req, res) => {
 		const isValid = jwt.verify(token, process.env.SECRET_KEY);
 
 		if (isValid) {
-			const existingUser = await User.findById(isValid.id);
+			const existingUser = await User.findById(isValid.id).select("password");
 
 			if (!existingUser) {
 				throw {
@@ -17,7 +17,7 @@ const setNewPassword = async (req, res) => {
 					message: "Invalid token or token may has expired",
 				};
 			}
-			
+
 			const hashedPassword = await bcrypt.hash(req.body.password, 12);
 			existingUser.password = hashedPassword;
 
@@ -26,9 +26,7 @@ const setNewPassword = async (req, res) => {
 			throw { status: 400, message: "Invalid token or token may has expired" };
 		}
 
-		res
-			.status(200)
-			.json({ message: "Password reset successful" });
+		res.status(200).json({ message: "Password reset successful" });
 	} catch (err) {
 		res.status(err.status || 500).json({ message: err.message });
 	}

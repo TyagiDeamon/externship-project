@@ -5,7 +5,7 @@ import "dotenv/config";
 
 const passwordReset = async (req, res) => {
 	try {
-		const existingUser = await User.findById(req.body.id);
+		const existingUser = await User.findById(req.body.id).select("email");
 
 		if (!existingUser) {
 			throw { status: 404, message: "Account not found" };

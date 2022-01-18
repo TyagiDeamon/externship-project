@@ -17,6 +17,7 @@ import getRecievedRequests from "../controllers/user/getRecievedRequests.js";
 import blockUser from "../controllers/user/blockUser.js";
 import unblockUser from "../controllers/user/unblockUser.js";
 import deleteAvatar from "../controllers/user/deleteAvatar.js";
+import uploadAvatar from "../controllers/user/uploadAvatar.js";
 
 import {
 	getUser,
@@ -50,6 +51,7 @@ router.post("/blockUser/:id", verifyLogin, blockUser);
 router.post("/unblockUser/:id", verifyLogin, unblockUser);
 
 router.delete("/deleteAvatar", verifyLogin, deleteAvatar);
+router.post("/uploadAvatar", upload.single("image"), verifyLogin, uploadAvatar);
 
 router.get("/", getUsers);
 router.get("/:id", getUserById);

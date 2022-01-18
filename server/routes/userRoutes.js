@@ -16,6 +16,7 @@ import getSentRequests from "../controllers/user/getSentRequests.js";
 import getRecievedRequests from "../controllers/user/getRecievedRequests.js";
 import blockUser from "../controllers/user/blockUser.js";
 import unblockUser from "../controllers/user/unblockUser.js";
+import deleteAvatar from "../controllers/user/deleteAvatar.js";
 
 import {
 	getUser,
@@ -47,6 +48,8 @@ router.post("/removeFriend/:id", verifyLogin, removeFriend);
 
 router.post("/blockUser/:id", verifyLogin, blockUser);
 router.post("/unblockUser/:id", verifyLogin, unblockUser);
+
+router.delete("/deleteAvatar", verifyLogin, deleteAvatar);
 
 router.get("/", getUsers);
 router.get("/:id", getUserById);

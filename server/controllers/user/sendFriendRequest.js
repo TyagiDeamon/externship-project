@@ -29,6 +29,13 @@ const sendFriendRequest = async (req, res) => {
 			throw { status: 404, message: "Account not found" };
 		}
 
+		if (!user.emailVerified) {
+			throw {
+				status: 400,
+				message: "Account of this user is not yet activated",
+			};
+		}
+
 		sender.sentRequests.push(user._id);
 		await sender.save();
 

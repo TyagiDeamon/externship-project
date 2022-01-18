@@ -11,13 +11,9 @@ const passwordReset = async (req, res) => {
 			throw { status: 404, message: "Account not found" };
 		}
 
-		const token = jwt.sign({ email: req.body.email }, process.env.SECRET_KEY, {
+		const token = jwt.sign({ id: req.body.id }, process.env.SECRET_KEY, {
 			expiresIn: "1d",
 		});
-
-		existingUser.passwordResetToken = token;
-
-		await existingUser.save();
 
 		await axios.post("http://localhost:6000/email/sendEmail", {
 			email: existingUser.email,

@@ -6,16 +6,10 @@ import axios from "axios";
 const userSignup = async (req, res) => {
 	try {
 		if (req.body.id) {
-			throw { status: 400, message: "Account already exists with the provided credentials" };
-		}
-
-		const uploadResult = await axios.post(
-			"http://localhost:7000/media/uploadMedia",
-			req.file
-		);
-
-		if (uploadResult.status == 500) {
-			return res.status(500).json(uploadResult);
+			throw {
+				status: 400,
+				message: "Account already exists with the provided credentials",
+			};
 		}
 
 		const hashedPassword = await bcrypt.hash(req.body.password, 12);
@@ -29,11 +23,25 @@ const userSignup = async (req, res) => {
 			username: req.body.username,
 			password: hashedPassword,
 			name: req.body.name,
-			avatar: uploadResult.data.secure_url,
-			cloudinary_id: uploadResult.data.public_id,
 			tempToken: token,
 			posts: [],
 		});
+
+		if (req.file?.path) {
+			const uploadResult = await axios.post(
+				"http://localhost:7000/media/uploadMedia",
+				req.file
+			);
+
+			if (uploadResult.status == 500) {
+				return res.status(500).json(uploadResult);
+			}
+
+			newUser.avatar = uploadResult.data.secure_url;
+			newUser.cloudinary_id = uploadResult.data.public_id;
+		}
+
+		await newUser.save();
 
 		await axios.post("http://localhost:6000/email/sendEmail", {
 			email: req.body.email,

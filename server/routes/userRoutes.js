@@ -11,6 +11,9 @@ import sendFriendRequest from "../controllers/user/sendFriendRequest.js";
 import acceptRequest from "../controllers/user/acceptRequest.js";
 import rejectRequest from "../controllers/user/rejectRequest.js";
 import removeFriend from "../controllers/user/removeFriend.js";
+import getAllFriends from "../controllers/user/getAllFriends.js";
+import getSentRequests from "../controllers/user/getSentRequests.js";
+import getRecievedRequests from "../controllers/user/getRecievedRequests.js";
 
 import {
 	getUser,
@@ -27,11 +30,15 @@ router.post("/signup", upload.single("image"), getUser, userSignup);
 
 router.get("/emailVerify/:token", emailVerify);
 
-router.use(getUser, emailVerified);
+router.get("/getAllFriends/:id", verifyLogin, getAllFriends);
+router.get("/getSentRequests/:id", verifyLogin, getSentRequests);
+router.get("/getRecievedRequests/:id", verifyLogin, getRecievedRequests);
 
-router.post("/login", getUser, userLogin);
+// router.use(getUser, emailVerified);
 
-router.post("/passwordReset", getUser, passwordReset);
+router.post("/login", getUser, emailVerified, userLogin);
+
+router.post("/passwordReset", getUser, emailVerified, passwordReset);
 router.post("/setNewPassword/:passwordResetToken", setNewPassword);
 
 router.post("/sendFriendRequest/:id", verifyLogin, sendFriendRequest);

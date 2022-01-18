@@ -2,7 +2,7 @@ import User from "../../models/User.js";
 
 const getRecievedRequests = async (req, res) => {
 	try {
-		const user = await User.findById(req.params.id);
+		const user = await User.findById(req.body.id);
 
 		if (!user) {
 			throw { status: 404, message: "Account not found" };

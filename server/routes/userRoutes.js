@@ -14,6 +14,8 @@ import removeFriend from "../controllers/user/removeFriend.js";
 import getAllFriends from "../controllers/user/getAllFriends.js";
 import getSentRequests from "../controllers/user/getSentRequests.js";
 import getRecievedRequests from "../controllers/user/getRecievedRequests.js";
+import blockUser from "../controllers/user/blockUser.js";
+import unblockUser from "../controllers/user/unblockUser.js";
 
 import {
 	getUser,
@@ -23,16 +25,13 @@ import {
 
 const router = express.Router();
 
-router.get("/", getUsers);
-router.get("/:id", getUserById);
-
 router.post("/signup", upload.single("image"), getUser, userSignup);
 
 router.get("/emailVerify/:token", emailVerify);
 
-router.get("/getAllFriends/:id", verifyLogin, getAllFriends);
-router.get("/getSentRequests/:id", verifyLogin, getSentRequests);
-router.get("/getRecievedRequests/:id", verifyLogin, getRecievedRequests);
+router.get("/getAllFriends", verifyLogin, getAllFriends);
+router.get("/getSentRequests", verifyLogin, getSentRequests);
+router.get("/getRecievedRequests", verifyLogin, getRecievedRequests);
 
 // router.use(getUser, emailVerified);
 
@@ -45,5 +44,11 @@ router.post("/sendFriendRequest/:id", verifyLogin, sendFriendRequest);
 router.post("/acceptRequest/:id", verifyLogin, acceptRequest);
 router.post("/rejectRequest/:id", verifyLogin, rejectRequest);
 router.post("/removeFriend/:id", verifyLogin, removeFriend);
+
+router.post("/blockUser/:id", verifyLogin, blockUser);
+router.post("/unblockUser/:id", verifyLogin, unblockUser);
+
+router.get("/", getUsers);
+router.get("/:id", getUserById);
 
 export default router;

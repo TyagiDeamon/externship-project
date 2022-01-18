@@ -23,6 +23,13 @@ const sendFriendRequest = async (req, res) => {
 			throw { status: 400, message: "Already sent a request to the user" };
 		}
 
+		if (sender.blocked.includes(req.params.id)) {
+			throw {
+				status: 400,
+				message: "You've blocked this user. Please unblock them and try again",
+			};
+		}
+
 		const user = await User.findById(req.params.id);
 
 		if (!user) {
@@ -34,6 +41,10 @@ const sendFriendRequest = async (req, res) => {
 				status: 400,
 				message: "Account of this user is not yet activated",
 			};
+		}
+
+		if (user.blocked.includes(sender._id)) {
+			throw { status: 400, message: "You have been blocked by the user" };
 		}
 
 		sender.sentRequests.push(user._id);

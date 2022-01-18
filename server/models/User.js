@@ -21,14 +21,10 @@ const userSchema = new Schema({
 		type: Boolean,
 		default: false,
 	},
-	signedInToken: {},
-	tempToken: {
-		type: String,
-		required: true,
-	},
 	sentRequests: [],
 	recievedRequests: [],
 	friends: [],
+	blocked: [],
 	created_at: {
 		type: Date,
 		default: Date.now,
@@ -38,7 +34,6 @@ const userSchema = new Schema({
 		default: Date.now,
 	},
 	posts: [],
-	passwordResetToken: String,
 });
 
 const User = mongoose.model("User", userSchema);

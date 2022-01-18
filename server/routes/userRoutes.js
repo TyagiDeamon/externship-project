@@ -18,6 +18,7 @@ import blockUser from "../controllers/user/blockUser.js";
 import unblockUser from "../controllers/user/unblockUser.js";
 import deleteAvatar from "../controllers/user/deleteAvatar.js";
 import uploadAvatar from "../controllers/user/uploadAvatar.js";
+import suggestFriends from "../controllers/user/suggestFriends.js";
 
 import {
 	getUser,
@@ -42,6 +43,7 @@ router.post("/login", getUser, emailVerified, userLogin);
 router.post("/passwordReset", getUser, emailVerified, passwordReset);
 router.post("/setNewPassword/:passwordResetToken", setNewPassword);
 
+router.get("/suggestFriends", verifyLogin, suggestFriends);
 router.post("/sendFriendRequest/:id", verifyLogin, sendFriendRequest);
 router.post("/acceptRequest/:id", verifyLogin, acceptRequest);
 router.post("/rejectRequest/:id", verifyLogin, rejectRequest);

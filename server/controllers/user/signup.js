@@ -29,7 +29,7 @@ const userSignup = async (req, res) => {
 
 		if (req.file?.path) {
 			const uploadResult = await axios.post(
-				`http://localhost:${MEDIA_PORT}/media/uploadMedia`,
+				`http://localhost:${process.env.MEDIA_PORT}/media/uploadMedia`,
 				req.file
 			);
 
@@ -43,7 +43,7 @@ const userSignup = async (req, res) => {
 
 		await newUser.save();
 
-		await axios.post(`http://localhost:${EMAIL_PORT}/email/sendEmail`, {
+		await axios.post(`http://localhost:${process.env.EMAIL_PORT}/email/sendEmail`, {
 			email: req.body.email,
 			subject: "Welcome! Activate your account",
 			text: `Hello, please activate your account using the following link: http://localhost:5000/user/emailVerify/${token}`,

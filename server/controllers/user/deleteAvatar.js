@@ -10,12 +10,11 @@ const deleteAvatar = async (req, res) => {
 		}
 
 		if (!user.cloudinary_id) {
-			throw { status: 400, message: "Bad request" };
+			throw { status: 400, message: "You don't have an avatar" };
 		}
 
-		const deleteResult = await axios.post(
-			`http://localhost:${MEDIA_PORT}/media/uploadMedia`,
-			{ id: user.cloudinary_id }
+		const deleteResult = await axios.delete(
+			`http://localhost:${process.env.MEDIA_PORT}/media/deleteMedia/${user.cloudinary_id}`
 		);
 
 		if (deleteResult.status != 200) {

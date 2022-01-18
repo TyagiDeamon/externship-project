@@ -27,11 +27,14 @@ const emailVerify = async (req, res) => {
 			throw { status: 400, message: "Invalid token or token may has expired" };
 		}
 
-		await axios.post("http://localhost:6000/email/sendEmail", {
-			email: existingUser.email,
-			subject: "Account activated",
-			text: "Hello, your account is successfully activated!",
-		});
+		await axios.post(
+			`http://localhost:${process.env.EMAIL_PORT}/email/sendEmail`,
+			{
+				email: existingUser.email,
+				subject: "Account activated",
+				text: "Hello, your account is successfully activated!",
+			}
+		);
 
 		res.status(200).json({ existingUser, message: "Account activated" });
 	} catch (err) {

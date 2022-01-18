@@ -15,11 +15,14 @@ const passwordReset = async (req, res) => {
 			expiresIn: "1d",
 		});
 
-		await axios.post("http://localhost:6000/email/sendEmail", {
-			email: existingUser.email,
-			subject: "Password reset",
-			text: `Hello, use the following link to set your new password. http://localhost:5000/user/setNewPassword/${token}`,
-		});
+		await axios.post(
+			`http://localhost:${process.env.EMAIL_PORT}/email/sendEmail`,
+			{
+				email: existingUser.email,
+				subject: "Password reset",
+				text: `Hello, use the following link to set your new password. http://localhost:5000/user/setNewPassword/${token}`,
+			}
+		);
 
 		res
 			.status(200)

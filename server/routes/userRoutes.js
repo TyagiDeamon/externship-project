@@ -14,6 +14,7 @@ import removeFriend from "../controllers/user/removeFriend.js";
 import getAllFriends from "../controllers/user/getAllFriends.js";
 import getSentRequests from "../controllers/user/getSentRequests.js";
 import getRecievedRequests from "../controllers/user/getRecievedRequests.js";
+import getBlocked from "../controllers/user/getBlocked.js";
 import blockUser from "../controllers/user/blockUser.js";
 import unblockUser from "../controllers/user/unblockUser.js";
 import deleteAvatar from "../controllers/user/deleteAvatar.js";
@@ -27,35 +28,36 @@ import {
 } from "../middlewares/user.middleware.js";
 
 const router = express.Router();
-
-router.post("/signup", upload.single("image"), getUser, userSignup);
+// router.use(getUser, emailVerified);
 
 router.get("/emailVerify/:token", emailVerify);
 
 router.get("/getAllFriends", verifyLogin, getAllFriends);
+router.get("/getBlocked", verifyLogin, getBlocked);
+
 router.get("/getSentRequests", verifyLogin, getSentRequests);
 router.get("/getRecievedRequests", verifyLogin, getRecievedRequests);
+router.get("/suggestFriends", verifyLogin, suggestFriends);
 
-// router.use(getUser, emailVerified);
+router.get("/", getUsers);
+router.get("/:id", getUserById);
 
+router.post("/signup", upload.single("image"), getUser, userSignup);
 router.post("/login", getUser, emailVerified, userLogin);
 
 router.post("/passwordReset", getUser, emailVerified, passwordReset);
 router.post("/setNewPassword/:passwordResetToken", setNewPassword);
 
-router.get("/suggestFriends", verifyLogin, suggestFriends);
 router.post("/sendFriendRequest/:id", verifyLogin, sendFriendRequest);
 router.post("/acceptRequest/:id", verifyLogin, acceptRequest);
 router.post("/rejectRequest/:id", verifyLogin, rejectRequest);
 router.post("/removeFriend/:id", verifyLogin, removeFriend);
 
-router.post("/blockUser/:id", verifyLogin, blockUser);
-router.post("/unblockUser/:id", verifyLogin, unblockUser);
+router.post("/block/:id", verifyLogin, blockUser);
+router.post("/unblock/:id", verifyLogin, unblockUser);
 
-router.delete("/deleteAvatar", verifyLogin, deleteAvatar);
 router.post("/uploadAvatar", upload.single("image"), verifyLogin, uploadAvatar);
 
-router.get("/", getUsers);
-router.get("/:id", getUserById);
+router.delete("/deleteAvatar", verifyLogin, deleteAvatar);
 
 export default router;

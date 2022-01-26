@@ -3,6 +3,7 @@ import upload from "../utils/multer.js";
 import createPost from "../controllers/post/createPost.js";
 import likePost from "../controllers/post/likePost.js";
 import unlikePost from "../controllers/post/unlikePost.js";
+import addComment from "../controllers/post/addComment.js";
 
 import {
 	getUser,
@@ -19,5 +20,7 @@ router.post("/create", upload.array("image"), verifyLogin, createPost);
 router.patch("/like/:id", verifyLogin, likePost);
 
 router.patch("/unlike/:id", verifyLogin, unlikePost);
+
+router.patch("/addComment/:id", verifyLogin, addComment);
 
 export default router;

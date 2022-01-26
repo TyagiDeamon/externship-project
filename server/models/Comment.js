@@ -6,6 +6,10 @@ const commentSchema = new Schema({
 		type: String,
 		required: true,
 	},
+	description: {
+		type: String,
+		required: true,
+	},
 	likes: {
 		type: Number,
 		default: 0,

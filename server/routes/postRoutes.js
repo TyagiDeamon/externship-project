@@ -1,7 +1,8 @@
 import express from "express";
 import upload from "../utils/multer.js";
 import createPost from "../controllers/post/createPost.js";
-import createPrivatePost from "../controllers/post/privatePost.js";
+import likePost from "../controllers/post/likePost.js";
+import unlikePost from "../controllers/post/unlikePost.js";
 
 import {
 	getUser,
@@ -14,5 +15,9 @@ const router = express.Router();
 router.get("/:user_id/:post_id");
 
 router.post("/create", upload.array("image"), verifyLogin, createPost);
+
+router.patch("/like/:id", verifyLogin, likePost);
+
+router.patch("/unlike/:id", verifyLogin, unlikePost);
 
 export default router;

@@ -15,6 +15,7 @@ const postSchema = new Schema({
 		type: Number,
 		default: 0,
 	},
+	liked_by: [],
 	comments: [],
 	created_at: {
 		type: Date,

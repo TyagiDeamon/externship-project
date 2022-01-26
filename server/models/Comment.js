@@ -14,6 +14,7 @@ const commentSchema = new Schema({
 		type: Number,
 		default: 0,
 	},
+	liked_by: [],
 	comments: [],
 	post_id: {
 		type: String,

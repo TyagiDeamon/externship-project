@@ -6,6 +6,7 @@ import unlikePost from "../controllers/post/unlikePost.js";
 import addComment from "../controllers/post/addComment.js";
 import deleteComment from "../controllers/post/deleteComment.js";
 import addReply from "../controllers/post/addReply.js";
+import likeComment from "../controllers/post/likeComment.js";
 
 import {
 	getUser,
@@ -28,5 +29,7 @@ router.patch("/addComment/:id", verifyLogin, addComment);
 router.patch("/deleteComment/:id", verifyLogin, deleteComment);
 
 router.patch("/addReply/:id", verifyLogin, addReply);
+
+router.patch("/likeComment/:id", verifyLogin, likeComment);
 
 export default router;

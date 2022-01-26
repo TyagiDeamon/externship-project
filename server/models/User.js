@@ -34,6 +34,10 @@ const userSchema = new Schema({
 		default: Date.now,
 	},
 	posts: [],
+	type: {
+		type: String,
+		default: "public",
+	},
 });
 
 const User = mongoose.model("User", userSchema);

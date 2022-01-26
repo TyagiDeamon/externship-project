@@ -1,12 +1,7 @@
 import mongoose from "mongoose";
 const Schema = mongoose.Schema;
 
-const postSchema = new Schema({
-	description: {
-		type: String,
-		required: true,
-	},
-	media: [],
+const commentSchema = new Schema({
 	author: {
 		type: String,
 		required: true,
@@ -16,6 +11,10 @@ const postSchema = new Schema({
 		default: 0,
 	},
 	comments: [],
+	post_id: {
+		type: String,
+		required: true,
+	},
 	created_at: {
 		type: Date,
 		default: Date.now,
@@ -26,5 +25,5 @@ const postSchema = new Schema({
 	},
 });
 
-const Post = mongoose.model("Post", postSchema);
-export default Post;
+const Comment = mongoose.model("Comment", commentSchema);
+export default Comment;

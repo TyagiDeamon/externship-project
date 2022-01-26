@@ -16,7 +16,7 @@ const unlikePost = async (req, res) => {
 			return res.status(200).json(post);
 		}
 
-		post.likes = post.likes + 1;
+		post.likes = post.likes - 1;
 		post.liked_by.splice(post.liked_by.indexOf(user.username), 1);
 
 		await post.save();

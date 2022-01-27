@@ -2,6 +2,7 @@ import express from "express";
 import upload from "../utils/multer.js";
 import getPost from "../controllers/post/getPost.js";
 import createPost from "../controllers/post/createPost.js";
+import sharePost from "../controllers/post/sharePost.js";
 import likePost from "../controllers/post/likePost.js";
 import unlikePost from "../controllers/post/unlikePost.js";
 import addComment from "../controllers/post/addComment.js";

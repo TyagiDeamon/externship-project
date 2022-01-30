@@ -10,6 +10,7 @@ import deleteComment from "../controllers/post/deleteComment.js";
 import addReply from "../controllers/post/addReply.js";
 import likeComment from "../controllers/post/likeComment.js";
 import unlikeComment from "../controllers/post/unlikeComment.js";
+import getComments from "../controllers/post/getComments.js";
 
 import { verifyLogin } from "../middlewares/user.middleware.js";
 
@@ -32,5 +33,7 @@ router.patch("/likeComment/:id", verifyLogin, likeComment);
 router.patch("/unlikeComment/:id", verifyLogin, unlikeComment);
 
 router.get("/:id", verifyLogin, getPost);
+
+router.get("/getComments/:post_id/:page/:perPage", verifyLogin, getComments);
 
 export default router;

@@ -32,8 +32,8 @@ router.patch("/likeComment/:id", verifyLogin, likeComment);
 
 router.patch("/unlikeComment/:id", verifyLogin, unlikeComment);
 
-router.get("/:id", verifyLogin, getPost);
-
 router.get("/getComments/:post_id/:page/:perPage", verifyLogin, getComments);
+
+router.get("/:id", verifyLogin, getPost);
 
 export default router;

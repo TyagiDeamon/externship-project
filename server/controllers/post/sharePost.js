@@ -1,5 +1,6 @@
 import Post from "../../models/Post.js";
 import User from "../../models/User.js";
+import axios from "axios";
 
 const sharePost = async (req, res) => {
 	try {
@@ -24,10 +25,16 @@ const sharePost = async (req, res) => {
 		}
 
 		await user.posts.push(req.params.id);
-
 		await user.save();
+		await axios.post(`http://localhost:${process.env.PORT}/notification`, {
+			sender: req.body.username,
+			reciever: post.author,
+			post: req.params.id,
+			content: `${req.body.username} shared your post`,
+			type: "share",
+		});
 
-		res.status(200).json({user});
+		res.status(200).json({ user });
 	} catch (err) {
 		res
 			.status(err.status || 500)

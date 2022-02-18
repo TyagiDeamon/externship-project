@@ -1,4 +1,5 @@
 import User from "../../models/User.js";
+import axios from "axios";
 
 const sendFriendRequest = async (req, res) => {
 	try {
@@ -6,7 +7,9 @@ const sendFriendRequest = async (req, res) => {
 			throw { status: 400, message: "Bad request" };
 		}
 
-		const sender = await User.findById(req.body.id);
+		const sender = await User.findById(req.body.id).select(
+			"friends sentRequests blocked"
+		);
 
 		if (!sender) {
 			throw {
@@ -30,7 +33,9 @@ const sendFriendRequest = async (req, res) => {
 			};
 		}
 
-		const user = await User.findById(req.params.id);
+		const user = await User.findById(req.params.id).select(
+			"friends recievedRequests blocked emailVerified username"
+		);
 
 		if (!user) {
 			throw { status: 404, message: "Account not found" };
@@ -52,6 +57,12 @@ const sendFriendRequest = async (req, res) => {
 
 		user.recievedRequests.push(sender._id);
 		await user.save();
+		await axios.post(`http://localhost:${process.env.PORT}/notification`, {
+			sender: req.body.username,
+			reciever: user.username,
+			content: `${req.body.username} sent you a friend request`,
+			type: "request",
+		});
 
 		res.status(200).json({
 			message: "Friend request sent successfully",

@@ -1,10 +1,11 @@
 import User from "../../models/User.js";
 import Comment from "../../models/Comment.js";
+import axios from "axios";
 
 const addReply = async (req, res) => {
 	try {
 		const comment = await Comment.findById(req.params.id).select(
-			"comments description"
+			"comments description author"
 		);
 
 		if (!comment) {
@@ -29,6 +30,13 @@ const addReply = async (req, res) => {
 
 		await comment.comments.push(newComment._id);
 		await comment.save();
+		await axios.post(`http://localhost:${process.env.PORT}/notification`, {
+			sender: req.body.username,
+			reciever: comment.author,
+			post: newComment.post_id,
+			content: `${req.body.username} replied to your comment`,
+			type: "reply",
+		});
 
 		res.status(200).json({ newComment, comment });
 	} catch (err) {

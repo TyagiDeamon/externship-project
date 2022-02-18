@@ -14,7 +14,6 @@ const notificationSchema = new Schema(
 		post: {
 			type: mongoose.Schema.Types.ObjectId,
 			ref: "Post",
-			required: true,
 		},
 		content: {
 			type: String,

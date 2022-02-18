@@ -1,9 +1,12 @@
 import Post from "../../models/Post.js";
 import User from "../../models/User.js";
+import axios from "axios";
 
 const likePost = async (req, res) => {
 	try {
-		const post = await Post.findById(req.params.id).select("likes liked_by");
+		const post = await Post.findById(req.params.id).select(
+			"likes liked_by author"
+		);
 		if (!post) {
 			throw { status: 404, message: "Post not found" };
 		}
@@ -20,6 +23,13 @@ const likePost = async (req, res) => {
 		post.liked_by.push(user.username);
 
 		await post.save();
+		await axios.post(`http://localhost:${process.env.PORT}/notification`, {
+			sender: req.body.username,
+			reciever: post.author,
+			post: req.params.id,
+			content: `${req.body.username} liked your post`,
+			type: "like",
+		});
 
 		res.status(200).json(post);
 	} catch (err) {

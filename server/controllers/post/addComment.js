@@ -1,10 +1,11 @@
 import Post from "../../models/Post.js";
 import User from "../../models/User.js";
 import Comment from "../../models/Comment.js";
+import axios from "axios";
 
 const addComment = async (req, res) => {
 	try {
-		const post = await Post.findById(req.params.id).select("comments");
+		const post = await Post.findById(req.params.id).select("comments author");
 
 		if (!post) {
 			throw { status: 404, message: "Post not found" };
@@ -24,6 +25,13 @@ const addComment = async (req, res) => {
 
 		await post.comments.push(comment._id);
 		await post.save();
+		await axios.post(`http://localhost:${process.env.PORT}/notification`, {
+			sender: req.body.username,
+			reciever: post.author,
+			post: req.params.id,
+			content: `${req.body.username} commented on your post`,
+			type: "comment",
+		});
 
 		res.status(200).json({ comment, post });
 	} catch (err) {

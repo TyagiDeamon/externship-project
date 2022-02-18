@@ -6,7 +6,9 @@ import "dotenv/config";
 const userLogin = async (req, res) => {
 	const { password } = req.body;
 	try {
-		const existingUser = await User.findById(req.body.id).select("password");
+		const existingUser = await User.findById(req.body.id).select(
+			"password email username"
+		);
 		if (!existingUser) {
 			throw { status: 404, message: "Account not found" };
 		}
@@ -21,7 +23,11 @@ const userLogin = async (req, res) => {
 		}
 
 		const token = jwt.sign(
-			{ email: existingUser.email, id: existingUser._id },
+			{
+				email: existingUser.email,
+				id: existingUser._id,
+				username: existingUser.username,
+			},
 			process.env.SECRET_KEY,
 			{ expiresIn: "1d" }
 		);

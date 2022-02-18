@@ -40,6 +40,7 @@ export const verifyLogin = async (req, res, next) => {
 		}
 
 		req.body.id = data.id;
+		req.body.username = data.username;
 
 		next();
 	} catch (err) {

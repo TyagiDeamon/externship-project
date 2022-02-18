@@ -5,6 +5,7 @@ import "dotenv/config";
 
 import userRoutes from "../routes/userRoutes.js";
 import postRoutes from "../routes/postRoutes.js";
+import notificationRoutes from "../routes/notificationRoutes.js";
 
 const app = express();
 app.use(cors());
@@ -20,6 +21,7 @@ app.get("/ping", (req, res) => {
 
 app.use("/user", userRoutes);
 app.use("/post", postRoutes);
+app.use("/notification", notificationRoutes);
 
 mongoose.connect(
 	process.env.MONGO_URI,

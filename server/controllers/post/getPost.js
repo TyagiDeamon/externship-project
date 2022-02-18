@@ -27,6 +27,9 @@ const getPost = async (req, res) => {
 			};
 		}
 
+		post.views = post.views + 1;
+		await post.save();
+
 		res.status(200).json(post);
 	} catch (err) {
 		res
